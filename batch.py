@@ -192,11 +192,11 @@ class Submit:
         )
         print("Context configuration:")
         print(
-            "Output folder: ",
+            "Output folder (if allowed computing): ",
             self.peaks_output_folder if self.level == "peaks" else self.events_output_folder,
         )
         print(
-            "Storage to patch: ",
+            "Storage to patch (if allowed computing): ",
             self.peaks_storage_to_patch if self.level == "peaks" else self.events_storage_to_patch,
         )
         print("Allow generating new data:")
