@@ -178,7 +178,7 @@ class Submit:
         jobstring = "python {script} {level} {loop_item} {result_filename} {err_filename}".format(
             script=self.script,
             level=self.level,
-            loop_item=list(loop_item),
+            loop_item=str(list(loop_item)),
             result_filename=self.result_filename,
             err_filename=self.err_filename,
         )
