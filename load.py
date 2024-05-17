@@ -25,7 +25,7 @@ class Loader:
         result_filename = args[3]
         err_filename = args[4]
 
-        runlist = ast.literal_eval(_runlist)
+        runlist = ast.literal_eval(runlist_str)
 
         self.level = level
         self.runlist = runlist
