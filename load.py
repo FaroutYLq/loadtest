@@ -6,6 +6,7 @@ import json
 import ast
 from random import randint
 import configparser
+import gc
 
 
 class Loader:
@@ -128,6 +129,8 @@ class Loader:
                 try:
                     print(f"Loading {targets}...")
                     data = self.st.get_array(runid, targets, keep_columns=("time"))
+                    del data
+                    gc.collect()
                     time.sleep(randint(1, 5))
                     print(f"{targets} loaded.")
                 except Exception as e:
