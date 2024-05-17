@@ -179,17 +179,20 @@ class Submit:
 
         print("Submitting job: ", jobname)
         print("Command: ", jobstring)
-        utilix.batchq.submit_job(
-            jobstring=jobstring,
-            log=log,
-            partition=self.partition,
-            qos=self.qos,
-            account=self.account,
-            jobname=jobname,
-            mem_per_cpu=self.mem_per_cpu,
-            container=self.container,
-            cpus_per_task=self.cpus_per_task,
-        )
+        if not self.debug:
+            utilix.batchq.submit_job(
+                jobstring=jobstring,
+                log=log,
+                partition=self.partition,
+                qos=self.qos,
+                account=self.account,
+                jobname=jobname,
+                mem_per_cpu=self.mem_per_cpu,
+                container=self.container,
+                cpus_per_task=self.cpus_per_task,
+            )
+        else:
+            print("Debug mode, not submitting the job.")
         print("Context configuration:")
         print(
             "Output folder (if allowed computing): ",
