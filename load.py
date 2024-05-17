@@ -122,7 +122,7 @@ class Loader:
             if not is_stored:
                 time.sleep(randint(1, 5))
                 with open(self.err_filename, "a") as f:
-                    f.write(f"{runid} failed because of missing {missing_datatypes}\n")
+                    f.write(f"{runid} failed because of missing {missing_datatypes}\n\n")
                 continue
 
             for targets in self.targets:
@@ -132,11 +132,13 @@ class Loader:
                     del data
                     gc.collect()
                     time.sleep(randint(1, 5))
-                    print(f"{targets} loaded.")
+                    with open(self.result_filename, "a") as f:
+                        f.write(runid + "\n")
+                    print(f"{targets} loaded. Updated result file.")
                 except Exception as e:
                     print(f"Error: {e}")
                     with open(self.err_filename, "a") as f:
-                        f.write(f"{runid} failed because of {e}\n")
+                        f.write(f"{runid} failed because of {e}\n\n")
                     continue
 
 
