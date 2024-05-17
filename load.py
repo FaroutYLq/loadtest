@@ -127,3 +127,9 @@ class Loader:
                     with open(self.err_filename, "a") as f:
                         f.write(f"{runid} failed because of {e}\n")
                     continue
+
+
+if __name__ == "__main__":
+    loader = Loader()
+    loader.loadtest()
+    print("Load test done.")
