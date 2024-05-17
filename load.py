@@ -2,6 +2,7 @@ import numpy as np
 import sys
 import cutax
 import time
+import json
 import ast
 from random import randint
 import configparser
@@ -36,11 +37,11 @@ class Loader:
         self.config = config
 
         must_have_dict = config.get("load", "must_have", fallback=None)
-        must_have_dict = ast.literal_eval(must_have_dict)
+        must_have_dict = json.loads(must_have_dict)
         self.must_have = must_have_dict[self.level]
 
         targets_dict = config.get("load", "targets", fallback=None)
-        targets_dict = ast.literal_eval(targets_dict)
+        targets_dict = json.loads(targets_dict)
         self.targets = targets_dict[self.level]
 
         if self.level == "peaks":

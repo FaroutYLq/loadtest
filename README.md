@@ -55,19 +55,8 @@ allow_peaks_computation = False
 allow_events_computation = True
 
 [load]
-must_have = {
-    "peaks": ["peaklets", "lone_hits", "merged_s2s", "peaklet_classification", "peak_basics", "peak_positions_mlp", "peak_positions_cnn", "peak_positions_gcn"],
-    "events": ["peak_basics", "peak_positions_mlp", "peak_positions_cnn", "peak_positions_gcn", "event_pattern_fit", "event_basics", "event_shadow", "event_ambience"],
-}
-targets = {
-    "peaks": [
-        ("peaks", "peak_basics", "peak_positions"),
-    ],
-    "events": [
-        ("event_info", "cuts_basic"),
-        ("peak_positions", "peak_basics"),
-    ],
-}
+must_have = {"peaks": ["peaklets", "lone_hits", "merged_s2s", "peaklet_classification", "peak_basics", "peak_positions_mlp", "peak_positions_cnn", "peak_positions_gcn"], "events": ["peak_basics", "peak_positions_mlp", "peak_positions_cnn", "peak_positions_gcn", "event_pattern_fit", "event_basics", "event_shadow", "event_ambience"]}
+targets = {"peaks": [["peaks", "peak_basics", "peak_positions"]], "events": [["event_info", "cuts_basic"], ["peak_positions", "peak_basics"]]}
 ```
 Some tips:
 - `debug = True` will not submit any jobs to slurm.

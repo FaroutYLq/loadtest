@@ -210,8 +210,21 @@ class Submit:
             self.peaks_storage_to_patch if self.level == "peaks" else self.events_storage_to_patch,
         )
         print("Allow generating new data:")
-        print("Peaks: ", self.allow_peaks_computation)
-        print("Events: ", self.allow_events_computation)
+        print("    Peaks: ", self.allow_peaks_computation)
+        print("    Events: ", self.allow_events_computation)
+
+    def _make_folders(self):
+        """Make folders for the results."""
+        if self.level == "peaks":
+            if not os.path.exists(self.peaks_result_folder):
+                os.makedirs(self.peaks_result_folder)
+            if not os.path.exists(self.peaks_log_dir):
+                os.makedirs(self.peaks_log_dir)
+        elif self.level == "events":
+            if not os.path.exists(self.events_result_folder):
+                os.makedirs(self.events_result_folder)
+            if not os.path.exists(self.events_log_dir):
+                os.makedirs(self.events_log_dir)
 
     def prepare(self):
         """Prepare the submission."""
@@ -221,6 +234,7 @@ class Submit:
         self._decide_result_filename()
         self.script = os.path.join(os.path.dirname(__file__), "load.py")
         self._chunk_list()
+        self._make_folders()
 
     def submit(self):
         """Submit the jobs."""
