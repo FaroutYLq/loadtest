@@ -75,6 +75,14 @@ class Submit:
             "context", "events_storage_to_patch", fallback=None
         )
 
+        # Load computation related configuration
+        self.allow_peaks_computation = config.getboolean(
+            "computation", "allow_peaks_computation", fallback=False
+        )
+        self.allow_events_computation = config.getboolean(
+            "computation", "allow_events_computation", fallback=False
+        )
+
     def _decide_result_filename(self):
         txt_name = f"{self.run_mode}-{self.level}-{self.datetime}-loadable.txt"
         err_name = f"{self.run_mode}-{self.level}-{self.datetime}-err.txt"
@@ -191,6 +199,9 @@ class Submit:
             "Storage to patch: ",
             self.peaks_storage_to_patch if self.level == "peaks" else self.events_storage_to_patch,
         )
+        print("Allow generating new data:")
+        print("Peaks: ", self.allow_peaks_computation)
+        print("Events: ", self.allow_events_computation)
 
     def prepare(self):
         self._load_runlists()
