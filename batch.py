@@ -174,11 +174,11 @@ class Submit:
     def _submit_single(self, loop_index, loop_item):
         """Submit a single job using utilix.batchq."""
         batch_i = loop_index
-        jobname = "loadtest_%s_%s" % (self.level, batch_i)
-        jobstring = "python {script} {level} {loop_item} {result_filename} {err_filename}".format(
+        jobname = "loadtest_%s_%s_%s" % (self.level, self.run_mode, batch_i)
+        jobstring = "python {script} {level} '{loop_item}' {result_filename} {err_filename}".format(
             script=self.script,
             level=self.level,
-            loop_item=str(list(loop_item)),
+            loop_item=list(loop_item),
             result_filename=self.result_filename,
             err_filename=self.err_filename,
         )

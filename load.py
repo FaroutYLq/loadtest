@@ -17,7 +17,14 @@ class Loader:
 
     def _get_job_attr(self):
         """Get job attributes from sys.argv."""
-        _, level, _runlist, result_filename, err_filename = sys.argv
+        args = sys.argv
+        print(f"Arguments received : {args}")
+
+        level = args[1]
+        runlist_str = args[2]
+        result_filename = args[3]
+        err_filename = args[4]
+
         runlist = ast.literal_eval(_runlist)
 
         self.level = level
