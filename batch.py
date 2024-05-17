@@ -182,6 +182,15 @@ class Submit:
             container=self.container,
             cpus_per_task=self.cpus_per_task,
         )
+        print("Context configuration:")
+        print(
+            "Output folder: ",
+            self.peaks_output_folder if self.level == "peaks" else self.events_output_folder,
+        )
+        print(
+            "Storage to patch: ",
+            self.peaks_storage_to_patch if self.level == "peaks" else self.events_storage_to_patch,
+        )
 
     def prepare(self):
         self._load_runlists()
