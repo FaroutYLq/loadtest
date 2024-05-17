@@ -84,6 +84,8 @@ class Submit:
         )
 
     def _decide_result_filename(self):
+        """Decide the result filename and error filename based on the run mode
+        and level."""
         txt_name = f"{self.run_mode}-{self.level}-{self.datetime}-loadable.txt"
         err_name = f"{self.run_mode}-{self.level}-{self.datetime}-err.txt"
         if self.level == "peaks":
@@ -96,6 +98,7 @@ class Submit:
             self.logdir = self.events_log_dir
 
     def _decide_batchq_common_para(self):
+        """Decide the common parameters for batchq."""
         self.account = "pi-lgrandi"
         if self.level == "peaks":
             self.partition = "dali"
@@ -111,6 +114,7 @@ class Submit:
             raise ValueError("Invalid level, please choose from peaks or events")
 
     def _load_runlists(self):
+        """Load runlists from Jingqiang's reprocessing runlists."""
         # Load Jingqiang's runlists for SR0
         # Reference: https://xe1t-wiki.lngs.infn.it/doku.php?id=xenon:xenonnt_sr1:v12_reprocess
         with open(
@@ -155,17 +159,20 @@ class Submit:
         ), f"Invalid run mode: {self.run_mode}, you can choose from {self.sr0_modes} or {self.sr1_modes}"
 
     def _chunk_list(self, **kwargs):
+        """Chunk the list into smaller pieces."""
         # List comprehension that generates chunks from the list
         chunk_size = self.runs_per_job
         lst = self.runlist
         self.chunked_runlist = [lst[i : i + chunk_size] for i in range(0, len(lst), chunk_size)]
 
     def _working_job(self):
+        """Get the number of working jobs."""
         cmd = "squeue --user={user} | wc -l".format(user=self.user)
         job_num = int(os.popen(cmd).read())
         return job_num - 1
 
     def _submit_single(self, loop_index, loop_item):
+        """Submit a single job using utilix.batchq."""
         batch_i = loop_index
         jobname = "loadtest_%s_%s" % (self.level, batch_i)
         jobstring = "python {script} {level} {loop_item} {result_filename} {err_filename}".format(
@@ -207,6 +214,7 @@ class Submit:
         print("Events: ", self.allow_events_computation)
 
     def prepare(self):
+        """Prepare the submission."""
         self._load_runlists()
         self._verify_run_mode()
         self._decide_batchq_common_para()
@@ -215,6 +223,7 @@ class Submit:
         self._chunk_list()
 
     def submit(self):
+        """Submit the jobs."""
         self.prepare()
 
         loop_over = self.chunked_runlist

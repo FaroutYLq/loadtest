@@ -1,6 +1,8 @@
 # loadtest
 Towards automated loading test. Strategy defined [here](https://xe1t-wiki.lngs.infn.it/doku.php?id=lanqing:sr1_loading_test).
 
+This package submits jobs to load data run by run in the way user did, and report loadability.
+
 ## Usage
 In some `cvmfs` conda environment:
 ```
