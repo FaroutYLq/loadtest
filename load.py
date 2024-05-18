@@ -68,6 +68,8 @@ class Loader:
             )
 
         # if not allow_computation, targets should be a subset of must_have
+        _never_save = config.get("load", "never_save", fallback=[])
+        self.never_save = json.loads(_never_save)
         self._reorganize_must_have()
 
         print(f"Allow computation: {self.allow_computation}")
@@ -80,7 +82,22 @@ class Loader:
         """Reorganize must_have list if allow_computation is False."""
         # if not allow_computation, targets should be a subset of must_have
         if not self.allow_computation:
-            self.must_have = list(set(self.must_have) | set(self.targets))
+            self._unpack_targets()
+            print("Since computation is not allowed, targets should be a subset of must_have.")
+            print("Merging {} and {}...".format(self.must_have, self.targets_concat))
+            self.must_have = list(set(self.must_have) | set(self.targets_concat))
+
+    def _unpack_targets(self):
+        """Unpack targets to a single list."""
+        targets_concat = []
+        for targets in self.targets:
+            targets_concat += targets
+        self.targets_concat = targets_concat
+        self._remove_never_saved()
+
+    def _remove_never_saved(self):
+        """Remove targets that should never be saved."""
+        self.targets_concat = [t for t in self.targets_concat if t not in self.never_saved]
 
     def _get_context(self):
         """Get context from cutax."""
