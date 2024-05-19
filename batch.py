@@ -31,8 +31,6 @@ class Submit:
         self.config = config
 
         # Load general configuration
-        self.load_peaks = config.getboolean("general", "load_peaks", fallback=True)
-        self.load_events = config.getboolean("general", "load_events", fallback=True)
         self.debug = config.getboolean("general", "debug", fallback=False)
 
         # Load utilix related configuration
@@ -256,12 +254,12 @@ class Submit:
 
 
 if __name__ == "__main__":
-    if load_peaks:
+    if eval(load_peaks):
         print("Submitting peaks loading jobs...")
         peaks_submit = Submit(level="peaks", run_mode=run_mode)
         peaks_submit.submit()
         print("Finished submitting peaks loading jobs...")
-    if load_events:
+    if eval(load_events):
         print("Submitting events loading jobs...")
         events_submit = Submit(level="events", run_mode=run_mode)
         events_submit.submit()
