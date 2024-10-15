@@ -10,11 +10,15 @@ python batch.py <str_run_mode> <bool_load_peaks> <bool_load_events>
 ```
 and here is an example
 ```
-For example: python batch.py sr1_bkg True True
+python batch.py sr1_bkg True True
 ```
 - It will load test all runs in official SR1 background run runlist.
 - It will test loading both peaks and events level offline data.
 - You can define more details for the test in configuration, especially `must_have` and `targets`.
+or alternatively you can put a runlist instead of the standard run mode.
+```
+python batch.py /project/lgrandi/xudc/runlist_sr1_kr83m_all_missing.txt True True
+```
 
 There will be two outputs in `<level>_result_folder`:
 - `<run_mode>-<level>-<datetime>-loadable.txt` which is a list of runs passing a specific load test.
