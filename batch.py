@@ -6,9 +6,18 @@ import utilix
 from utilix.batchq import *
 import pickle
 import configparser
+from utilix.io import load_runlist
 
 try:
     _, run_mode, load_peaks, load_events = sys.argv
+    # If run_mode is an existing txt file, directly read the runlist instead of run_mode
+    # Make the run_mode name to be the same as the txt file
+    if os.path.exists(run_mode):
+        runlist = load_runlist(run_mode)
+        run_mode = os.path.basename(run_mode).replace(".txt", "")
+    else:
+        runlist = None
+
 except:
     print("Usage: python batch.py <str_run_mode> <bool_load_peaks> <bool_load_events>")
     print("For example: python batch.py sr1_bkg True True")
@@ -40,7 +49,7 @@ class Submit:
         self.events_ram = config.getint("utilix", "events_ram", fallback=5000)
         self.events_cpu = config.getint("utilix", "events_cpu", fallback=1)
         self.t_sleep = config.getint("utilix", "t_sleep", fallback=10)
-        self.max_num_submit = config.getint("utilix", "max_num_submit", fallback=200)
+        self.max_num_submit = config.getint("utilix", "max_num_submit", fallback=2000)
         self.container = config.get("utilix", "container", fallback="xenonnt-development.simg")
         self.peaks_log_dir = config.get("utilix", "peaks_log_dir", fallback=None)
         self.events_log_dir = config.get("utilix", "events_log_dir", fallback=None)
@@ -226,8 +235,11 @@ class Submit:
 
     def prepare(self):
         """Prepare the submission."""
-        self._load_runlists()
-        self._verify_run_mode()
+        if runlist is not None:
+            self.runlist = runlist
+        else:
+            self._load_runlists()
+            self._verify_run_mode()
         self._decide_batchq_common_para()
         self._decide_result_filename()
         self.script = os.path.join(os.path.dirname(__file__), "load.py")
